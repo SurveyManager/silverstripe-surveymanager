@@ -7,6 +7,13 @@ class Survey extends DataObject {
         'PIN' => 'Varchar(16)',
         'Type' => "Enum('all,user','all')"
     );
+	private static $indexes = array(
+		'UniquePIN' => array(
+			'type' => 'unique', 
+			'value' => '"PIN"'
+		),
+	);
+
 
     private static $has_one = array (
         'SurveysPage' => 'SurveysPage'
