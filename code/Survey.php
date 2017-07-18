@@ -28,13 +28,6 @@ class Survey extends DataObject {
     public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeFieldFromTab("Root","SurveyResult");
-        /*$fields->addFieldToTab('Root', GridField::create(
-            'Surveys',
-            'List of surveys',
-            $this->Surveys(),
-            GridFieldConfig_RecordEditor::create()
-        ));*/
-
         return $fields;
     }
 }

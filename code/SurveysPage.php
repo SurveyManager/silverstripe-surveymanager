@@ -38,35 +38,30 @@ class SurveysPage_Controller extends Page_Controller {
 	private static $url_handlers = array(
 		'API/auth' => 'APIauth',
 		'API/$apitoken/surveysList' => 'APIsurveysList',
-        'API/$apitoken/saveData' => 'APIsaveData'
     );	
     private static $allowed_actions = array (
-        'APIauth', 'APIsaveData', 'APIsurveysList'
+        'APIauth', 'APIsurveysList'
     );
     
     
+    function _return($out) {
+		print json_encode($out,JSON_UNESCAPED_UNICODE);
+		die();
+	}
 	
 	private function _initAPI() {
 		if ($this->API===false) $this->API=new SurveyAPI();
 	}
     public function APIauth () {
 		$this->_initAPI();
-		//var_dump($this->getRequest());
-		var_dump($this->API->APIauth($this->getRequest()->postVar('email'), $this->getRequest()->postVar('pin') ));
+		$this->_return($this->API->APIauth($this->getRequest()->postVar('email'), $this->getRequest()->postVar('pin') ));
 	}
 
     public function APIsurveysList () {
 		$this->_initAPI();
-		//var_dump($this->API);
-		//var_dump(12345);
-		/*if ($this->checkAPIToken($this->getRequest()->param('apitoken'))) {
-			var_dump('ok');
-		} else {
-			var_dump('invalid tocken');
-		}*/
 	}
 
-    public function SaveData ($data = false) {
+    /*public function SaveData ($data = false) {
 		var_dump($data);
 		print "\n\n\n";
 		var_dump($_POST);
@@ -75,14 +70,14 @@ class SurveysPage_Controller extends Page_Controller {
 		print "\n\n\n";
 		
 		//TEST
-		/*$r= new SurveyResult();
+		$r= new SurveyResult();
 		$r->SurveyHash='dsfgsdfgsdfg';
         $r->QuestionHash='xcvxcvxcv';
         $r->QuestionID=1;
         $r->OptionID=2;
         $r->OptionText="text option";
         $r->SurveyID=1;
-        $r->write();*/
-	}
+        $r->write();
+	}*/
 }
 ?>
