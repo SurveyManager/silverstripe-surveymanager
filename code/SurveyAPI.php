@@ -1,33 +1,36 @@
 <?php
+// TODO docs
 class SurveyAPI extends DataObject  {
 	private static $db = array (
-        'token' => 'Varchar(128)',
-        'UserID' => 'Int',
-        'SurveyID' => 'Int'
-    );
+		'token' => 'Varchar(128)',
+		'UserID' => 'Int',
+		'SurveyID' => 'Int'
+	);
     
     private static $indexes = array(
-        'UniqueToken' => array(
-            'type' => 'unique', 
-            'value' => '"token"'
-        ),
-        'UserID' => array(
+		'UniqueToken' => array(
+			'type' => 'unique', 
+			'value' => '"token"'
+		),
+		'UserID' => array(
 			'type' => 'index',
 			'value' => '"UserID"'
-        ),
-        'SurveyID' => array(
+		),
+		'SurveyID' => array(
 			'type' => 'index',
 			'value' => '"SurveyID"'
-        ),
+		),
     );
     
+    private $token_ttl = 7*24*60*60;	// 7 days TODO
     private $survey = false;
     private $user = false;
+    private $API_data = false;
     private $API_answer = array(
 							"ok"=>false,
 							"d"=>array(),
 							"e"=>array()
-						);
+							);
     
     private function _flushTokens ($userID=false,$surveyID=false) {
 		// remove old tokens
@@ -75,7 +78,7 @@ class SurveyAPI extends DataObject  {
 			// Survey exists
 			if ($this->survey->Type=='user' && $this->user) {
 				// Survey restricted to users and some user exist
-				$check=SurveyUser::get()->filter(array('UserID' => $this->user->ID, 'SurveyID' => $this->survey->ID))->first();
+				$check=SurveyUser::get()->filter(array('UserID' => $this->user->ID, 'Access'=>true, 'SurveyID' => $this->survey->ID))->first();
 				if ($check) { 
 					// user in SurveyUsers list
 					$create_token=true; 
@@ -139,20 +142,68 @@ class SurveyAPI extends DataObject  {
 		$u->write();
 		return $u->ID;
 	}
-	function APIcheck($token) {
-		// TODO for security reason it's better to sign data using key/salt
-		
+	
+	private function _APIsignCheck($data) {
+		// TODO for security reason APIkey user for sign the data
+		return true;
+	}
+	private function _APIcheck($token) {
+		if (preg_match ('/[a-zA-Z0-9]/', $token)) {
+			$token=Convert::raw2sql($token);
+			$this->API_data=SurveyAPI::get()->filter(array('token' => $token))->first();
+			if ($this->API_data) {
+				$this->survey = Survey::get()->filter(array('ID' => $this->API_data->SurveyID))->first();
+				if ($this->survey) {
+					$this->user = DataObject::get_one('Member',"ID ='".$this->API_data->UserID."'");
+					return true;
+				}
+			}
+		} 
+		return false;
+	}
+	
+	function surveyQuestions ($token) {
+		$out=$this->API_answer;
+		if ($this->_APIcheck($token)) {
+			$out['d']=array("survey"=>array(
+					"title"=>$this->survey->Title,
+					"Description"=>$this->survey->Description,
+					"PIN"=>$this->survey->PIN
+				), "questions"=>array());
+			$q=DataObject::get_by_id("SurveysPage",$this->survey->SurveysPageID);
+			$out['d']['APIkey']=$q->APIkey;
+			$q=SurveyQuestion::get()->filter(array('SurveyID' => $this->API_data->SurveyID));
+			foreach($q as $item) { 
+				$q_item=array(
+					"title"=>$item->Title,
+					"description"=>$item->Description,
+					"type"=>$item->Type,
+					"other"=>$item->Other,
+					"options"=>array()
+				);
+				$o=QuestionOption::get()->filter(array("SurveyQuestionID" => $item->ID));
+				foreach($o as $option) { 
+					$q_item['options'][$option->ID]=$option->Option;
+				}
+				$out['d']['questions'][]=$q_item;
+			}
+		} else {
+			$out['e'][]='access_denied';
+		}
+		return $this->_return($out);
 	}
 	
 	private function _genToken ($limit = 64) {
-		// alsmost http://guruquest.net/question/how-to-generate-random-unique-ids-like-youtube-or-tinyurl-in-php/
+		// don't remember where is it from, but tnx =)
 		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabsdefghigklmnopqrstuvwxyz1234567890';
-			$characters_length=strlen($characters)-1;
-		$randstring = '';
-		for ($i = 0; $i < $limit; $i++) {
-			$randstring .= $characters[rand(0, $characters_length)];
+		$_max=strlen($characters)-1;
+		mt_srand((double)microtime()*1000000);
+		$_r="";
+		while ($limit>0) {
+				$_r.=$characters{mt_rand(0,$_max)};
+				$limit--;
 		}
-		return $randstring;
+		return $_r;
 	}
 	
 	private function _return ($out) {

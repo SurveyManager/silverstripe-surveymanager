@@ -37,10 +37,10 @@ class SurveysPage_Controller extends Page_Controller {
 
 	private static $url_handlers = array(
 		'API/auth' => 'APIauth',
-		'API/$apitoken/surveysList' => 'APIsurveysList',
+		'API/questions' => 'APIsurveyQuestions',
     );	
     private static $allowed_actions = array (
-        'APIauth', 'APIsurveysList'
+        'APIauth', 'APIsurveyQuestions'
     );
     
     
@@ -57,8 +57,9 @@ class SurveysPage_Controller extends Page_Controller {
 		$this->_return($this->API->APIauth($this->getRequest()->postVar('email'), $this->getRequest()->postVar('pin') ));
 	}
 
-    public function APIsurveysList () {
+    public function APIsurveyQuestions() {
 		$this->_initAPI();
+		$this->_return($this->API->surveyQuestions($this->getRequest()->postVar('token')));
 	}
 
     /*public function SaveData ($data = false) {
