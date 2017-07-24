@@ -171,27 +171,32 @@ class SurveyAPI extends DataObject  {
 		$out=$this->API_answer;
 		if ($this->_APIcheck($token)) {
 			if ($this->_APIsignCheck($data)) {
-				$data['QH']=Convert::raw2sql($data['QH']);
-				$tmp = SurveyResult::get()->filter(array('QuestionHash' => $data['QH']))->first();
-				if ($tmp->ID>0) {
-					$out['ok']=true;
-					$out['d']=array("QH"=>$tmp->QuestionHash, "s"=>'ok');
-				} else {
-					$r = new SurveyResult();
-					$r->SurveyHash=$data['SH'];
-					$r->QuestionHash=$data['QH'];
-					$r->QuestionID=$data['Qid'];
-					$r->OptionID=$data['oid'];
-					$r->UserID=$this->API_data->UserID;
-					$r->OptionText=$data['t'];
-					$r->SurveyID=$this->API_data->SurveyID;
-					$id = $r->write();
-					if ($id>0) {
+				if ($data['SH']!='' && $data['QH']!='' && $data['qid']>0 && $data['oid']>0) {
+					$data['QH']=Convert::raw2sql($data['QH']);
+					$tmp = SurveyResult::get()->filter(array('QuestionHash' => $data['QH']))->first();
+					if ($tmp->ID>0) {
 						$out['ok']=true;
-						$out['d']=array("QH"=>$r->QuestionHash, "s"=>'new');
+						$out['d']=array("QH"=>$tmp->QuestionHash, "s"=>'ok');
 					} else {
-						$out['e'][]='save_error';
+						$r = new SurveyResult();
+						$r->SurveyHash=$data['SH'];
+						$r->QuestionHash=$data['QH'];
+						$r->QuestionID=(int)$data['qid'];
+						$r->OptionID=(int)$data['oid'];
+						$r->UserID=$this->API_data->UserID;
+						$r->OptionText=$data['t'];
+						$r->SurveyID=$this->API_data->SurveyID;
+						$r->ResultTS=(int)$data['ts'];
+						$id = $r->write();
+						if ($id>0) {
+							$out['ok']=true;
+							$out['d']=array("QH"=>$r->QuestionHash, "s"=>'new');
+						} else {
+							$out['e'][]='save_error';
+						}
 					}
+				} else {
+					$out['e'][]='wrong_data';
 				}
 			} else {
 				$out['e'][]='wrong_sign';
@@ -215,6 +220,7 @@ class SurveyAPI extends DataObject  {
 			$q=SurveyQuestion::get()->filter(array('SurveyID' => $this->API_data->SurveyID));
 			foreach($q as $item) { 
 				$q_item=array(
+					"id"=>$item->ID,
 					"title"=>$item->Title,
 					"description"=>$item->Description,
 					"type"=>$item->Type,
@@ -223,9 +229,9 @@ class SurveyAPI extends DataObject  {
 				);
 				$o=QuestionOption::get()->filter(array("SurveyQuestionID" => $item->ID));
 				foreach($o as $option) { 
-					$q_item['options'][$option->ID]=$option->Option;
+					$q_item['options'][$option->ID]=array("id"=>$option->ID, "title"=>$option->Option);
 				}
-				$out['d']['questions'][]=$q_item;
+				$out['d']['questions'][$item->ID]=$q_item;
 			}
 		} else {
 			$out['e'][]='access_denied';
