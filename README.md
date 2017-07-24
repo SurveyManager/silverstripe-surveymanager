@@ -8,16 +8,16 @@ EDENZ college Capstone project. Pluging for SilverStripe CMS to create and manip
  - `text` - text field
  - `one` - choose one of the item
  - `multi` - choose some of the items
-### Question `Other` field
-
+### Question "Other" field
+ - text field for one/multi question type
 
 ## API
 ### `auth` Get token (authorization by email and survey PIN)
 Example `wget --post-data "email=email1@survey.example&pin=12345" http://site/pagename/API/auth`
-### `question` Get Survey data by token
+### `questions` Get Survey data by token
 Example `wget --post-data "token=4x1o7Rlou4iR..." http://site/pagename/API/questions`
 ### `save` Save survey result by question
-TODO
+Example `wget --post-data "token=4x1o7Rlou4iR...TODO" http://site/pagename/API/save`
 
 
 ## Authors
