@@ -38,9 +38,10 @@ class SurveysPage_Controller extends Page_Controller {
 	private static $url_handlers = array(
 		'API/auth' => 'APIauth',
 		'API/questions' => 'APIsurveyQuestions',
+		'API/save' => 'APIsaveResult'
     );	
     private static $allowed_actions = array (
-        'APIauth', 'APIsurveyQuestions'
+        'APIauth', 'APIsurveyQuestions', 'APIsaveResult'
     );
     
     
@@ -61,24 +62,10 @@ class SurveysPage_Controller extends Page_Controller {
 		$this->_initAPI();
 		$this->_return($this->API->surveyQuestions($this->getRequest()->postVar('token')));
 	}
-
-    /*public function SaveData ($data = false) {
-		var_dump($data);
-		print "\n\n\n";
-		var_dump($_POST);
-		print "\n\n\n";
-		var_dump($_GET);
-		print "\n\n\n";
-		
-		//TEST
-		$r= new SurveyResult();
-		$r->SurveyHash='dsfgsdfgsdfg';
-        $r->QuestionHash='xcvxcvxcv';
-        $r->QuestionID=1;
-        $r->OptionID=2;
-        $r->OptionText="text option";
-        $r->SurveyID=1;
-        $r->write();
-	}*/
+	
+	public function APIsaveResult() {
+		$this->_initAPI();
+		$this->_return($this->API->questionSave($this->getRequest()->postVar('token'), $this->getRequest()->postVar('d')));
+	}
 }
 ?>

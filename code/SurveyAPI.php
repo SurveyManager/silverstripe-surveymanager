@@ -22,7 +22,7 @@ class SurveyAPI extends DataObject  {
 		),
     );
     
-    private $token_ttl = 7*24*60*60;	// 7 days TODO
+    //private $token_ttl = 7*24*60*60;	// 7 days TODO
     private $survey = false;
     private $user = false;
     private $API_data = false;
@@ -145,6 +145,9 @@ class SurveyAPI extends DataObject  {
 	
 	private function _APIsignCheck($data) {
 		// TODO for security reason APIkey user for sign the data
+		// 1. sort fields by name
+		// 2. concat and hash (sha1 or old md5) it with APIkey
+		// 3. compare with data['sign']
 		return true;
 	}
 	private function _APIcheck($token) {
@@ -155,6 +158,8 @@ class SurveyAPI extends DataObject  {
 				$this->survey = Survey::get()->filter(array('ID' => $this->API_data->SurveyID))->first();
 				if ($this->survey) {
 					$this->user = DataObject::get_one('Member',"ID ='".$this->API_data->UserID."'");
+					$q=DataObject::get_by_id("SurveysPage",$this->survey->SurveysPageID);
+					$this->APIkey=$q->APIkey;
 					return true;
 				}
 			}
@@ -162,16 +167,51 @@ class SurveyAPI extends DataObject  {
 		return false;
 	}
 	
+	function questionSave ($token, $data) {
+		$out=$this->API_answer;
+		if ($this->_APIcheck($token)) {
+			if ($this->_APIsignCheck($data)) {
+				$data['QH']=Convert::raw2sql($data['QH']);
+				$tmp = SurveyResult::get()->filter(array('QuestionHash' => $data['QH']))->first();
+				if ($tmp->ID>0) {
+					$out['ok']=true;
+					$out['d']=array("QH"=>$tmp->QuestionHash, "s"=>'ok');
+				} else {
+					$r = new SurveyResult();
+					$r->SurveyHash=$data['SH'];
+					$r->QuestionHash=$data['QH'];
+					$r->QuestionID=$data['Qid'];
+					$r->OptionID=$data['oid'];
+					$r->UserID=$this->API_data->UserID;
+					$r->OptionText=$data['t'];
+					$r->SurveyID=$this->API_data->SurveyID;
+					$id = $r->write();
+					if ($id>0) {
+						$out['ok']=true;
+						$out['d']=array("QH"=>$r->QuestionHash, "s"=>'new');
+					} else {
+						$out['e'][]='save_error';
+					}
+				}
+			} else {
+				$out['e'][]='wrong_sign';
+			}
+		} else {
+			$out['e'][]='access_denied';
+		}
+		return $this->_return($out);
+	}
+	
 	function surveyQuestions ($token) {
 		$out=$this->API_answer;
 		if ($this->_APIcheck($token)) {
+			$out['ok']=true;
 			$out['d']=array("survey"=>array(
 					"title"=>$this->survey->Title,
 					"Description"=>$this->survey->Description,
 					"PIN"=>$this->survey->PIN
 				), "questions"=>array());
-			$q=DataObject::get_by_id("SurveysPage",$this->survey->SurveysPageID);
-			$out['d']['APIkey']=$q->APIkey;
+			$out['d']['APIkey']=$this->APIkey;
 			$q=SurveyQuestion::get()->filter(array('SurveyID' => $this->API_data->SurveyID));
 			foreach($q as $item) { 
 				$q_item=array(

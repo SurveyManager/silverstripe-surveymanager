@@ -18,9 +18,7 @@ class SurveyQuestion extends DataObject {
     
     public static function getQuestionPlugins() {
 		$plugins = array();
-		/*foreach(ClassInfo::subclassesFor('SurveyQuestion') as $i => $class){
-			if($class != 'Question' && !ClassInfo::classImplements($class, 'TestOnly')) $classes[$class] = $class;
-		}*/
+		// Todo catch "plugins" not so hardcoded
 		$plugins['text']  = "Text";
 		$plugins['one']   = "Select one";
 		$plugins['multi'] = "Select multiply";
