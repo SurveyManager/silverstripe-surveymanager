@@ -30,5 +30,9 @@ class Survey extends DataObject {
 		$fields->removeFieldFromTab("Root","SurveyResult");
         return $fields;
     }
+
+    public function Link() {
+        return $this->SurveysPage()->Link('show/'.$this->ID);
+    }
 }
 ?>

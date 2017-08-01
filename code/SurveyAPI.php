@@ -2,22 +2,22 @@
 // TODO docs
 class SurveyAPI extends DataObject  {
 	private static $db = array (
-		'token' => 'Varchar(128)',
-		'UserID' => 'Int',
-		'SurveyID' => 'Int'
+		'token' 	=> 'Varchar(128)',
+		'UserID' 	=> 'Int',
+		'SurveyID' 	=> 'Int'
 	);
     
     private static $indexes = array(
-		'UniqueToken' => array(
-			'type' => 'unique', 
+		'UniqueToken'	=> array(
+			'type' 	=> 'unique', 
 			'value' => '"token"'
 		),
-		'UserID' => array(
-			'type' => 'index',
+		'UserID' 		=> array(
+			'type' 	=> 'index',
 			'value' => '"UserID"'
 		),
-		'SurveyID' => array(
-			'type' => 'index',
+		'SurveyID' 		=> array(
+			'type' 	=> 'index',
 			'value' => '"SurveyID"'
 		),
     );
