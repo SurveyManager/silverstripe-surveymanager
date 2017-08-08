@@ -15,3 +15,5 @@ SSViewer:
   # if you want to set a theme, change the 2 lines below
   theme_enabled: false
   # theme: 'simple'
+Debug:
+  friendly_error_httpcode: true
