@@ -11,6 +11,7 @@
 
     <link href="SurveyManager/css/lib.css" rel="stylesheet">      <!-- Bootstrap -->
     <link href="SurveyManager/css/main.css" rel="stylesheet">     <!-- Main CSS  -->
+    <link href="SurveyManager/css/second.css" rel="stylesheet">     <!-- Second CSS  -->
     <!-- HTML5NG: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>

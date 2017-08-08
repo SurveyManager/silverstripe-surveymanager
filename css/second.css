@@ -1,0 +1,9 @@
+.page-header{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.addQuestion{
+	position: fixed;
+	bottom: 10px;
+	left: 0px;
+}
