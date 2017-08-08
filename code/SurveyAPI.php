@@ -171,28 +171,35 @@ class SurveyAPI extends DataObject  {
 		$out=$this->API_answer;
 		if ($this->_APIcheck($token)) {
 			if ($this->_APIsignCheck($data)) {
-				if ($data['SH']!='' && $data['QH']!='' && $data['qid']>0 && $data['oid']>0) {
+				if ($data['SH']!='' && $data['QH']!='' && $data['qid']>0) {
 					$data['QH']=Convert::raw2sql($data['QH']);
 					$tmp = SurveyResult::get()->filter(array('QuestionHash' => $data['QH']))->first();
 					if ($tmp->ID>0) {
 						$out['ok']=true;
 						$out['d']=array("QH"=>$tmp->QuestionHash, "s"=>'ok');
 					} else {
-						$r = new SurveyResult();
-						$r->SurveyHash=$data['SH'];
-						$r->QuestionHash=$data['QH'];
-						$r->QuestionID=(int)$data['qid'];
-						$r->OptionID=(int)$data['oid'];
-						$r->UserID=$this->API_data->UserID;
-						$r->OptionText=$data['t'];
-						$r->SurveyID=$this->API_data->SurveyID;
-						$r->ResultTS=(int)$data['ts'];
-						$id = $r->write();
-						if ($id>0) {
-							$out['ok']=true;
-							$out['d']=array("QH"=>$r->QuestionHash, "s"=>'new');
+						if (strstr($data['oid'],"_")) {
+							$data['oid']=explode("_",$data['oid']);
 						} else {
-							$out['e'][]='save_error';
+							$data['oid']=array($data['oid']);
+						}
+						foreach ($data['oid'] as $v) {
+							$r = new SurveyResult();
+							$r->SurveyHash=$data['SH'];
+							$r->QuestionHash=$data['QH'];
+							$r->QuestionID=(int)$data['qid'];
+							$r->OptionID=(int)$v;
+							$r->UserID=$this->API_data->UserID;
+							$r->OptionText=$data['t'];
+							$r->SurveyID=$this->API_data->SurveyID;
+							$r->ResultTS=(int)$data['ts'];
+							$id = $r->write();
+							if ($id>0) {
+								$out['ok']=true;
+								$out['d'][]=array("QH"=>$r->QuestionHash, "s"=>'new');
+							} else {
+								$out['e'][]='save_error';
+							}
 						}
 					}
 				} else {
