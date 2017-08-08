@@ -21,7 +21,7 @@ class SurveyResult extends DataObject {
 			'value' => '"SurveyHash"'
 		),
 		'QuestionHash' => array(
-			'type' => 'index',
+			'type' => 'unique',
 			'value' => '"QuestionHash"'
 		),
 		'QuestionID' => array(
