@@ -14,7 +14,7 @@
   <div class="container">
     <form method="get"class="question-row-list">
       <% with Survey %>
-      <div class="row">
+      <div class="row survey-title">
           <div class="col-md-7 ">
             <div class="panel panel-default">
               <div class="panel-body">
@@ -23,13 +23,14 @@
                     <label for="surveyTitle">Survey Title:</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="surveyTitle" value="$Title">
+                    <input type="text" name="surveyTitle" class="form-control" id="surveyTitle" value="$Title" />
+                    <input type="hidden" value="$ID" id="surveyID" />
                   </div>
                   <div class="col-md-3">
                     <label for="description">Survey Description:</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="description" value="$Description">
+                    <input type="text" name="description" class="form-control" id="description" value="$Description" />
                   </div>
                 </div>
               </div>
@@ -48,13 +49,15 @@
                   <label for="questionTitle">Question Title:</label>
                 </div>
                 <div class="col-md-9">
-                  <input class="form-control" id="questionTitle" value="$Title" name="questionTitle[$ID]">
+                  <input class="form-control questionTitle" value="$Title" name="questionTitle[$ID]">
+                  <input type="hidden" value="$ID" class="questionID" />
                 </div>
                 <div class="col-md-3">
                   <label for="questionTitle">Question Description:</label>
+                  <button class="btn btn-danger delete-question">Delete Question</button>
                 </div>
                 <div class="col-md-9">
-                  <textarea class="form-control" rows="3" id="questionText" name="questionText[$ID]">$Description</textarea>
+                  <textarea class="form-control questionText" rows="3" id="" name="questionText[$ID]">$Description</textarea>
                 </div>
               </div>
             </div>
@@ -68,14 +71,17 @@
                         <option<% if $Type == 'one' %> selected <% end_if %>> one</option>
                         <option<% if $Type == 'multi' %> selected <% end_if %>> multi</option>
                     </select>
-                    <a class="btn btn-success addNewAnswer">Add answer</a>
+                    <a class="btn btn-success addNewAnswer">New Option</a>
                   </div>
                   <div class="col-md-9">
                     <div class="answers">
                       <% loop $QuestionOptions %>
-                        <input type="text" class="form-control" value="$Option" name="answer[$ID]">
+                      <div class="item-option">
+                        <input type="text" class="form-control optionText" value="$Option" name="answer[$ID]" />
+                        <input type="hidden" value="$ID" class="optionID" />
+                        <button class="btn btn-danger delete-option">x</button>
+                      </div>
                       <% end_loop %>
-
                     </div>
                   </div>
                 </div>
@@ -85,7 +91,8 @@
         </div>
       </div>
       <% end_loop %>
-      <a class="btn btn-success addQuestion" style="">Add Question</a>
+      <button class="btn btn-success addQuestion fixedButton">New Question</button>
+      <button class="btn btn-primary saveSurvey fixedButton">Save Survey</button>
     </form>
   </div>
 </section>

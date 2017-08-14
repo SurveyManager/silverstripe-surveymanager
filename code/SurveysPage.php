@@ -34,52 +34,34 @@ class SurveysPage_Controller extends Page_Controller {
   private $API = false;
 
   private static $url_handlers = array(
-    'API/auth' => 'APIauth',
+    'API/auth'      => 'APIauth',
     'API/questions' => 'APIsurveyQuestions',
-    'API/save' => 'APIsaveResult'
+    'API/save'      => 'APIsaveResult'
   );
   private static $allowed_actions = array (
-    'APIauth', 'APIsurveyQuestions', 'APIsaveResult',
-    'show'
+    'APIauth',
+    'APIsurveyQuestions',
+    'APIsaveResult',
+    'show',
+    'saveajax'
   );
-
+  public function saveajax(SS_HTTPRequest $request) {
+    echo $request;
+    return "res1";
+  }
   // Create survey pages by request /show/$ID
   // Show list of Questions and Answers
   public function show(SS_HTTPRequest $request) {
-    $survey = Survey::get()->byID($request->param('ID')); if(!$survey) return $this->httpError(404,'That region could not be found');
+    $survey = Survey::get()->byID($request->param('ID'));
+    if(!$survey) return $this->httpError(404,'That region could not be found');
     $Questions = $survey->SurveyQuestions();
-
-    // $plugins = SurveyQuestion::getQuestionPlugins();
-    // echo'<pre>';print_r($plugins);echo'</pre>';
-
-    // $ffff = SurveyQuestion::getCMSFields();
-    // echo'<pre>';print_r( $ffff->Type2 );echo'</pre>';
-    //
-    // foreach($Questions as $Q) {
-    //   echo'<pre>';
-    //     print('$Q->Title: ' .$Q->Title. '<br>');
-    //     print('$Q->Type: '  .$Q->Type.  '<br>');
-    //     print('$Q->Type2: '  .$Q->Type2.  '<br>');
-    //   echo'</pre>';
-      // echo'<pre>';print_r($Q);echo'</pre>';
-      // $Answers = $Q->QuestionOptions();
-      //
-      // foreach($Answers as $An){
-      //   print('An->Title: '.$An->Type.'<br>');
-      // }
-    // }
-
-    // echo'<pre>';print_r($Questions);echo'</pre>';
 
     return array (
       'Survey' => $survey,
       'Questions' => $Questions
     );
   }
-  // private function getQuestions($id)	{
-  // 	$questions = SurveyQuestion::get();
-  // 	return $questions;
-  // }
+
   function _return($out) {
     print json_encode($out,JSON_UNESCAPED_UNICODE);
     die();

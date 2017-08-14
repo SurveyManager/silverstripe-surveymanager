@@ -1,9 +1,32 @@
+/* SurveyPage_show.ss */
 .page-header{
 	margin-top: 0;
 	margin-bottom: 0;
 }
-.addQuestion{
+.fixedButton{
 	position: fixed;
-	bottom: 10px;
-	left: 0px;
+	width: 100px;
+	padding: 6px 0;
+	left: 3px;
 }
+.addQuestion{
+	bottom: 10px;
+}
+.saveSurvey{
+	bottom: 50px;
+}
+.addNewAnswer{
+	width: 100%;
+	margin: 5px 0;
+}
+.question-row-list input {
+    margin-bottom: 5px;
+}
+.answers input {
+	display: inline-block;
+  width: 91%;
+}
+.answers button.delete-option{
+	width: 8%;
+}
+button.delete-question{width: 100%; margin-bottom: 5px;}
