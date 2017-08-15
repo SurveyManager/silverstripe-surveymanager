@@ -46,7 +46,7 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-3">
-                  <label for="questionTitle">Question Title: (ID:$ID)</label>
+                  <label for="questionTitle">Question Title:<sup class="qIDv"> (ID:$ID)</sup></label>
                 </div>
                 <div class="col-md-9">
                   <input class="form-control questionTitle" value="$Title" name="questionTitle[$ID]">

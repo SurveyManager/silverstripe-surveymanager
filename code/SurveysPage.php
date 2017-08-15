@@ -56,21 +56,23 @@ class SurveysPage_Controller extends Page_Controller {
       $res['SurveyID'] = $sur->write();
 
       foreach ($d['questions'] as $Q) {
-        if( is_numeric( $qID = $Q['questionID'] ) ){
-          $quest = SurveyQuestion::get()->byID($Q['questionID']);
-        } else {
-          echo'm2. ';
-          $quest = SurveyQuestion::create();
-          $quest->SurveyID = $d['surveyID'];
-          $qID = $quest->write();
+        $qID = intval($Q['questionID']);
+        if($qID < 0) SurveyQuestion::get()->byID( ($qID*(-1)) )->delete();
+        else {
+          if( $qID > 0 ) $quest = SurveyQuestion::get()->byID($Q['questionID']);
+          if( $qID = 0 ) {
+            $quest = SurveyQuestion::create();
+            $quest->SurveyID = $d['surveyID'];
+            $qID = $quest->write();
+          }
+          $quest->Title = $Q['questionTitle'];
+          $quest->Description = $Q['questionDescription'];
+          // $quest->Type = $Q['questionsType'];
+          // $quest->Other = $Q[''];
         }
-        $quest->Title = $Q['questionTitle'];
-        $quest->Description = $Q['questionDescription'];
-        // $quest->Type = $Q['questionsType'];
-        // $quest->Other = $Q[''];
         foreach ($Q['options'] as $Op) {
           $opID = intval($Op['optionID']);
-          if($opID < 0) QuestionOption::get()->byID($opID)->delete();
+          if($opID < 0) QuestionOption::get()->byID( ($opID*(-1)) )->delete();
             else {
               if($opID > 0) $option = QuestionOption::get()->byID($opID);
               if($opID == 0) {
@@ -89,10 +91,16 @@ class SurveysPage_Controller extends Page_Controller {
   // Create survey pages by request /show/$ID
   // Show list of Questions and Answers
   public function show(SS_HTTPRequest $request) {
-    $survey = Survey::get()->byID($request->param('ID'));
+    $surveyID = $request->param('ID');
+    $survey = Survey::get()->byID($surveyID);
     if(!$survey) return $this->httpError(404,'That region could not be found');
     $Questions = $survey->SurveyQuestions();
 
+    // if( !$Questions->exists() ){
+    //   $Questions = SurveyQuestion::create();
+    //   $Questions->SurveyID = $surveyID;
+    //   $Questions->QuestionOptions = QuestionOption::create();
+    // }
     return array (
       'Survey' => $survey,
       'Questions' => $Questions

@@ -1,23 +1,34 @@
-// Add new Question
+// Add Question
 $('.addQuestion').click(function(event){ event.preventDefault()
 	let questionRow = $('.questions').first().clone(true)
 	questionRow.find('.questionTitle').attr({value:'', name:'questionTitle[]'})
+	questionRow.find('.qIDv').html('')
 	questionRow.find('.questionText').attr({name:'questionText[]'}).html('')
 	questionRow.find('.questionID').attr({value:''})
 	questionRow.find('select.typeOfQuest').val('')
-	questionRow.find('.answers input').attr({value:'', name:'answer[]'})
+	questionRow.find('.answers .item-option:not(:first)').remove()
+	questionRow.find('.answers input.optionText').attr({value:'', name:'answer[]'})
+	questionRow.find('.answers input.optionID').attr({value:''})
+	questionRow.find('.answers span').html('')
 	$('.question-row-list').append( questionRow )
 })
 
+// Delete Question
 $('.delete-question').click(function(event) {
 	event.preventDefault()
-	let  rows = $(this).closest('.question-row-list').find('.questions')
+	let  rows = $(this).closest('.question-row-list').find('.questions:visible')
 	if(rows.length > 1){
-		$(this).closest('.questions').remove()
+		// $(this).closest('.questions').remove()
+		let questionID = $(this).closest('.row').find('.questionID')
+		let newId = questionID.val()*-1
+		if(newId < 0){
+			questionID.val(newId);
+			$(this).closest('.questions').hide()
+		} else $(this).closest('.questions').remove()
 	}
 })
 
-// add Event all of addNewAnswer buttons
+// Add Option
 $('.addNewAnswer').click(function(){
 	let answers = $(this).parents('.row').first().find('.answers');
 	let item	= answers.find('.item-option').first().clone(true)
@@ -25,17 +36,17 @@ $('.addNewAnswer').click(function(){
 	answers.append( item )
 })
 
-// add Event all Delete buttons
+// Delete Option
 $('.answers button.delete-option').click(function(e){
 	e.preventDefault()
 	let  rows = $(this).closest('.answers').find('.item-option:visible')
 	if(rows.length > 1){
 		let optionID = $(this).parent().find('.optionID')
-		console.log(optionID.val()*-1);
 		let newId = optionID.val()*-1
-		optionID.val(newId);
-
-		// $(this).parent().hide()
+		if(newId < 0){
+			optionID.val(newId);
+			$(this).parent().hide()
+		} else $(this).parent().remove()
 	}
 })
 
