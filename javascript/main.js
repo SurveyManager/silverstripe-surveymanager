@@ -1,8 +1,9 @@
 // Add new Question
 $('.addQuestion').click(function(event){ event.preventDefault()
 	let questionRow = $('.questions').first().clone(true)
-	questionRow.find('#questionTitle').attr({value:'', name:'questionTitle[]'})
-	questionRow.find('#questionText').attr({name:'questionText[]'}).html('')
+	questionRow.find('.questionTitle').attr({value:'', name:'questionTitle[]'})
+	questionRow.find('.questionText').attr({name:'questionText[]'}).html('')
+	questionRow.find('.questionID').attr({value:''})
 	questionRow.find('select.typeOfQuest').val('')
 	questionRow.find('.answers input').attr({value:'', name:'answer[]'})
 	$('.question-row-list').append( questionRow )
@@ -27,9 +28,14 @@ $('.addNewAnswer').click(function(){
 // add Event all Delete buttons
 $('.answers button.delete-option').click(function(e){
 	e.preventDefault()
-	let  rows = $(this).closest('.answers').find('.item-option')
+	let  rows = $(this).closest('.answers').find('.item-option:visible')
 	if(rows.length > 1){
-		$(this).parent().remove()
+		let optionID = $(this).parent().find('.optionID')
+		console.log(optionID.val()*-1);
+		let newId = optionID.val()*-1
+		optionID.val(newId);
+
+		// $(this).parent().hide()
 	}
 })
 
@@ -73,14 +79,20 @@ $('.saveSurvey').click(function(event) { event.preventDefault()
 	saveData.questions = Qs
 	console.log(saveData)
 
-	let ddata = {ddd: 'ssddd'}
-
 	$.ajax({
 		url: 'http://silverstrip.loc/surveys-page/saveajax/',
 		type: 'POST',
-		data: ddata,
+		data:	{saveData:saveData},
 		success: function(result) {
 			console.log(result);
 		}
 	})
+
+	// $.ajax('http://silverstrip.loc/surveys-page/saveajax/')
+	// 	.done(function(){
+	//
+	// 	})
+	// 	.fail(function (xhr) {
+	// 		alert('Error: ' + xhr.responseText);
+	// 	})
 })

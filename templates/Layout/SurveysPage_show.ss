@@ -20,7 +20,7 @@
               <div class="panel-body">
                 <div class="row">
                   <div class="col-md-3">
-                    <label for="surveyTitle">Survey Title:</label>
+                    <label for="surveyTitle">Survey Title: (ID:$ID)</label>
                   </div>
                   <div class="col-md-9">
                     <input type="text" name="surveyTitle" class="form-control" id="surveyTitle" value="$Title" />
@@ -46,7 +46,7 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-3">
-                  <label for="questionTitle">Question Title:</label>
+                  <label for="questionTitle">Question Title: (ID:$ID)</label>
                 </div>
                 <div class="col-md-9">
                   <input class="form-control questionTitle" value="$Title" name="questionTitle[$ID]">
@@ -77,6 +77,7 @@
                     <div class="answers">
                       <% loop $QuestionOptions %>
                       <div class="item-option">
+                        <span style="position: absolute;font-size: 10px;right: 60px;">(ID:$ID)</span>
                         <input type="text" class="form-control optionText" value="$Option" name="answer[$ID]" />
                         <input type="hidden" value="$ID" class="optionID" />
                         <button class="btn btn-danger delete-option">x</button>

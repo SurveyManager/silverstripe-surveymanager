@@ -46,8 +46,45 @@ class SurveysPage_Controller extends Page_Controller {
     'saveajax'
   );
   public function saveajax(SS_HTTPRequest $request) {
-    echo $request;
-    return "res1";
+    if( $request->isAjax() ) {
+      $d = $request->postVar('saveData');
+      // print_r( $sdata['surveyID'] );
+      // echo"m1. ";
+      $sur = Survey::get()->byID($d['surveyID']);
+      $sur->Title = $d['surveyTitle'];
+      $sur->Description = $d['surveyDescription'];
+      $res['SurveyID'] = $sur->write();
+
+      foreach ($d['questions'] as $Q) {
+        if( is_numeric( $qID = $Q['questionID'] ) ){
+          $quest = SurveyQuestion::get()->byID($Q['questionID']);
+        } else {
+          echo'm2. ';
+          $quest = SurveyQuestion::create();
+          $quest->SurveyID = $d['surveyID'];
+          $qID = $quest->write();
+        }
+        $quest->Title = $Q['questionTitle'];
+        $quest->Description = $Q['questionDescription'];
+        // $quest->Type = $Q['questionsType'];
+        // $quest->Other = $Q[''];
+        foreach ($Q['options'] as $Op) {
+          $opID = intval($Op['optionID']);
+          if($opID < 0) QuestionOption::get()->byID($opID)->delete();
+            else {
+              if($opID > 0) $option = QuestionOption::get()->byID($opID);
+              if($opID == 0) {
+                $option = QuestionOption::create();
+                $option->SurveyQuestionID = $qID;
+              }
+              $option->Option = $Op['optionText'];
+              $optIDs[] = $option->write();
+            }
+          }
+          $res['QuestID'][$quest->write()] = $optIDs; $optIDs = array();
+        }
+      }
+      print_r( $res );
   }
   // Create survey pages by request /show/$ID
   // Show list of Questions and Answers
@@ -83,7 +120,12 @@ class SurveysPage_Controller extends Page_Controller {
     }
     public function APIsaveResult() {
       $this->_initAPI();
-      $this->_return($this->API->questionSave($this->getRequest()->postVar('token'), $this->getRequest()->postVar('d')));
+      $this->_return(
+        $this->API->questionSave(
+          $this->getRequest()->postVar('token'),
+          $this->getRequest()->postVar('d')
+        )
+      );
     }
 
 
