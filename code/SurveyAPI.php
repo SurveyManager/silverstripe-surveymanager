@@ -129,7 +129,7 @@ class SurveyAPI extends DataObject  {
 			$this->SurveyID=$this->survey->ID;
 			$this->write();
 			$out['ok']=true;
-			$out['d']=array("tokenID"=>$this->token);
+			$out['d']=array("tokenID"=>$this->token,"email"=>$email,"PIN"=>$pin);
 		}
 		return $this->_return($out);
 	}
