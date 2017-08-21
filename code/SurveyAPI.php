@@ -236,32 +236,42 @@ class SurveyAPI extends DataObject  {
 				foreach($o as $option) { 
 					$q_item['options'][$option->ID]=array("id"=>$option->ID, "title"=>$option->Option);
 					if ($data!==false) {
-						if (!$q_item['options']['total']) $q_item['options']['total']=0;
 						$sqlQuery = new SQLQuery();
 						$sqlQuery->setFrom('SurveyResult');
-						$sqlQuery->setSelect('COUNT("ID")');
+						$sqlQuery->setSelect('COUNT(ID)');
 						$sqlQuery->addWhere(array('OptionID' => $option->ID, 'QuestionID'=> $item->ID));
 						//$q_item['options'][$option->ID]['dbg']=$sqlQuery->sql($params);
 						//$q_item['options'][$option->ID]['dbg_params']=$params;
 						$cnt = (int)$sqlQuery->execute()->value();
-						$q_item['options']['total']+=$cnt;
 						$q_item['options'][$option->ID]['results']=$cnt;
 					}
 				}
 				if ($data!==false) {
-					if (!$q_item['options'][0]) {
-						$q_item['options'][0]=array("id"=>0, "title"=>"_");
-					}
-					if (!$q_item['options']['total']) $q_item['options']['total']=0;
+					if ($item->Type=='text' || $item->Other) {
+						if (!$q_item['options'][0]) {
+							$q_item['options'][0]=array("id"=>0, "title"=>"_");
+						}
+						if (!$q_item['options']['total']) $q_item['options']['total']=0;
 						$sqlQuery = new SQLQuery();
 						$sqlQuery->setFrom('SurveyResult');
-						$sqlQuery->setSelect('COUNT("ID")');
+						$sqlQuery->setSelect('COUNT(ID)');
 						$sqlQuery->addWhere(array('OptionID' => 0, 'QuestionID'=> $item->ID));
-						//$q_item['options'][0]['dbg']=$sqlQuery->sql($params);
-						//$q_item['options'][0]['dbg_params']=$params;
 						$cnt = (int)$sqlQuery->execute()->value();
-						$q_item['options']['total']+=$cnt;
 						$q_item['options'][0]['results']=$cnt;
+					}
+						
+					$sqlQuery = new SQLQuery();
+					$sqlQuery->setFrom('SurveyResult');
+					$sqlQuery->setSelect('COUNT(DISTINCT SurveyHash)');
+					if ($item->Type=='text' || $item->Other) {
+						$sqlQuery->addWhere(array('QuestionID'=> $item->ID));
+					} else {
+						$sqlQuery->addWhere(array('QuestionID'=> $item->ID, 'OptionID > ?'=>0));
+					}
+					//$q_item['options']['t']['dbg']=$sqlQuery->sql($params);
+					//$q_item['options']['t']['dbg_params']=$params;
+
+					$q_item['options']['total']=(int)$sqlQuery->execute()->value();
 				}
 				$out['d']['questions'][$item->ID]=$q_item;
 			}
