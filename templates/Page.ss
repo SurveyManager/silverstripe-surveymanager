@@ -34,6 +34,7 @@ $Layout
 <% include sFooter %>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
     <script src="SurveyManager/javascript/libs.min.js"></script>
+    <script>var AbsoluteLink = '$AbsoluteLink'</script>
     <script src="SurveyManager/javascript/main.js"></script>
   </body>
 </html>

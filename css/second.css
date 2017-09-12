@@ -3,17 +3,37 @@
 	margin-top: 0;
 	margin-bottom: 0;
 }
+.panel-heading span{line-height: 2;}
+#new-survey{
+	float: right;
+}
+.survey-control-panel .container{
+	padding-top: 7px;
+}
+.survey-control-panel .alert{
+	display: inline-block;
+  margin-bottom: 0;
+	padding: 6px;
+  font-weight: bold;
+}
 .fixedButton{
-	position: fixed;
-	width: 100px;
-	padding: 6px 0;
-	left: 3px;
+	/*width: 100px;*/
+	/*padding: 6px 0;*/
+	/*left: 3px;*/
 }
 .addQuestion{
-	bottom: 10px;
+	position: fixed;
+	border-radius: 36px;
+  width: 45px;
+  height: 45px;
+  font-size: 36px;
+  line-height: 36px;
+  padding: 0;
+  top: 50%;
+  left: 15px;
 }
 .saveSurvey{
-	bottom: 50px;
+	/*bottom: 50px;*/
 }
 .addNewAnswer{
 	width: 100%;
@@ -29,4 +49,152 @@
 .answers button.delete-option{
 	width: 8%;
 }
-button.delete-question{width: 100%; margin-bottom: 5px;}
+.questions{position: relative}
+button.delete-question{
+	font-size: 10px;
+	padding: 0;
+	position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  top: -10px;
+  right: 6px;
+	z-index: 10;
+}
+
+sub {float: right;}
+
+.new{
+	border: 3px solid #5cb85c;
+}
+
+.question-row-list .input,
+.question-row-list .textarea
+{
+	background-color: aliceblue;
+}
+
+
+
+
+
+
+
+
+
+
+/********* Spinner CSS ************/
+.save-msg{
+	float: left;
+	color: #5aaaa8;
+	font-size: 15px;
+	position: relative;
+	top: -6px;
+}
+#circleG{
+/*width:37.333333333333336px;*/
+width: 170px;
+position: absolute;
+top: -100px
+}
+
+.circleG{
+background-color:#5aaaa8;
+float:left;
+height:8px;
+margin-left:4px;
+width:8px;
+-webkit-animation-name:bounce_circleG;
+-webkit-border-radius:5px;
+-webkit-animation-duration:0.75s;
+-webkit-animation-iteration-count:infinite;
+-webkit-animation-direction:linear;
+-moz-animation-name:bounce_circleG;
+-moz-border-radius:5px;
+-moz-animation-duration:0.75s;
+-moz-animation-iteration-count:infinite;
+-moz-animation-direction:linear;
+opacity:0.3;
+-o-animation-name:bounce_circleG;
+border-radius:5px;
+-o-animation-duration:0.75s;
+-o-animation-iteration-count:infinite;
+-o-animation-direction:linear;
+-ms-animation-name:bounce_circleG;
+-ms-animation-duration:0.75s;
+-ms-animation-iteration-count:infinite;
+-ms-animation-direction:linear;
+opacity:0.3}
+
+#circleG_1{
+-webkit-animation-delay:0.15000000000000002s;
+-moz-animation-delay:0.15000000000000002s;
+-o-animation-delay:0.15000000000000002s;
+-ms-animation-delay:0.15000000000000002s;
+}
+
+#circleG_2{
+-webkit-animation-delay:0.35000000000000003s;
+-moz-animation-delay:0.35000000000000003s;
+-o-animation-delay:0.35000000000000003s;
+-ms-animation-delay:0.35000000000000003s;
+}
+
+#circleG_3{
+-webkit-animation-delay:0.45s;
+-moz-animation-delay:0.45s;
+-o-animation-delay:0.45s;
+-ms-animation-delay:0.45s;
+}
+
+@-webkit-keyframes bounce_circleG{
+0%{
+opacity:0.3}
+
+50%{
+opacity:1;
+background-color:#5aaaa8}
+
+100%{
+opacity:0.3}
+
+}
+
+@-moz-keyframes bounce_circleG{
+0%{
+opacity:0.3}
+
+50%{
+opacity:1;
+background-color:#5aaaa8}
+
+100%{
+opacity:0.3}
+
+}
+
+@-o-keyframes bounce_circleG{
+0%{
+opacity:0.3}
+
+50%{
+opacity:1;
+background-color:#5aaaa8}
+
+100%{
+opacity:0.3}
+
+}
+
+@-ms-keyframes bounce_circleG{
+0%{
+opacity:0.3}
+
+50%{
+opacity:1;
+background-color:#5aaaa8}
+
+100%{
+opacity:0.3}
+
+}
