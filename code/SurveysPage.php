@@ -66,6 +66,7 @@ class SurveysPage_Controller extends Page_Controller {
     }
     // echo('<pre>');print_r($list);echo('</pre>');
     return array(
+      'Member' => $member,
       'Surveys' => $list
     );
 
