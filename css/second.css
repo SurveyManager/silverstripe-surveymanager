@@ -32,6 +32,25 @@
   top: 50%;
   left: 15px;
 }
+.back-to-survey-list{
+	position: fixed;
+	top: calc(50% - 40px);
+	left: 15px;
+}
+.back-to-survey-list::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -33px;
+  border-width: 17px;
+  border-style: solid;
+  border-color: transparent #337ab7 transparent transparent;
+  border-radius: 0;
+}
+.back-to-survey-list:hover::before {
+	border-color: transparent #286090 transparent transparent;
+}
+
 .saveSurvey{
 	/*bottom: 50px;*/
 }
@@ -73,8 +92,16 @@ sub {float: right;}
 {
 	background-color: aliceblue;
 }
-
-
+/* some fixes */
+header .login-btns {
+    width: 150px;
+}
+footer .subscribe button {
+	margin-top: -1px;
+}
+footer .subscribe span{
+	left: 5px;
+}
 
 
 

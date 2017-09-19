@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="page-header">
-          <h1>Edit Survey <small>DevMark: Layout "SurveyPage_show.ss"</small></h1>
+          <h1>Edit Survey <!--<small>DevMark: Layout "SurveyPage_show.ss"</small>--> </h1>
         </div>
       </div>
     </div>
@@ -12,10 +12,10 @@
 
 <section class="content">
   <div class="container">
-    <form method="get"class="question-row-list">
+    <form method="get"class="question-row-list" style="margin-left: 60px">
       <% with Survey %>
       <div class="row survey-title">
-          <div class="col-md-7 ">
+          <div class="col-sm-12 col-md-12 col-lg-9">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row">
@@ -41,7 +41,7 @@
 
       <% loop $Questions %>
       <div class="row questions" qid="$ID">
-        <div class="col-md-7 ">
+        <div class="col-sm-12 col-md-12 col-lg-9">
           <button class="btn btn-danger delete-question" title="Delete Question">x</button>
           <div class="panel panel-default">
             <div class="panel-body">
@@ -94,6 +94,8 @@
       </div>
       <% end_loop %>
     </form>
+
+    <a href="/surveys-page/" class="btn btn-primary back-to-survey-list">Survey list</a>
     <button class="btn btn-success addQuestion fixedButton">+</button>
 
     <nav style="display:none" class="survey-control-panel navbar navbar-default navbar-fixed-bottom">

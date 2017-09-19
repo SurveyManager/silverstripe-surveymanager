@@ -45,8 +45,39 @@ class SurveysPage_Controller extends Page_Controller {
     'show',
     'saveajax'
   );
+  public function index(SS_HTTPRequest $request)  {
+    $member = Member::currentUser();
+    // JOIN
+    $sqlQuery = new SQLSelect();
+    $sqlQuery ->selectField('Survey.*')
+              ->setFrom('Survey')
+              ->addInnerJoin('SurveyUser',' Survey.ID = SurveyUser.SurveyID ')
+              ->addWhere(array(
+                  'SurveyUser.UserID' => $member->ID,
+                  'SurveyUser.Role' => 'Admin',
+                  'SurveyUser.Access' => 1
+                ));
+
+    $result = $sqlQuery->execute();
+
+    $list = ArrayList::create();
+    foreach($result as $row) {
+        $list->push($row);
+    }
+    // echo('<pre>');print_r($list);echo('</pre>');
+    return array(
+      'Surveys' => $list
+    );
+
+  }
 
   public function saveajax(SS_HTTPRequest $request) {
+    $member = Member::currentUser();
+    $res['Member'] = $member->ID;
+    if(!$member) {
+      $res['Errors'][] = 'Auth error';
+      return json_encode($res);
+    }
     // Saving method - all data (Not using)
     if( $request->isAjax() && $d = $request->postVar('saveData') ) {
       $sur = Survey::get()->byID($d['surveyID']);
@@ -137,11 +168,10 @@ class SurveysPage_Controller extends Page_Controller {
           break;
       }
       if( !$res['Errors'] ) $res['SaveingRes'] = $Object->write();
-      print_r($res);
     }
-
     // Add new Object
     elseif( $request->isAjax() && $data = $request->postVar('newOne') ){
+
       $res['InputData'] = $data;
       switch ($data['object']) { // Question, Option
         case 'Option':
@@ -160,16 +190,24 @@ class SurveysPage_Controller extends Page_Controller {
           break;
         case 'Survey':
           $survey = Survey::create();
+          $survey->Title = 'New Survey';
           $survey->SurveysPageID = 6;
           $survey->PIN = rand(100,999);
           $newSurveyID = $survey->write();
+
+          $SurveyUser = SurveyUser::create();
+          $SurveyUser->UserEmail = $member->Email;
+          $SurveyUser->Role = 'Admin';
+          $SurveyUser->Access = 1;
+          $SurveyUser->SurveyID = $newSurveyID;
+          $SurveyUser->write();
 
           $question = SurveyQuestion::create();
           $question->SurveyID = $newSurveyID;
           $newQuestionID = $question->write();
 
           $option = QuestionOption::create();
-          $option->SurveyQuestionID = $newOptionID;
+          $option->SurveyQuestionID = $newQuestionID;
           $newOptionID = $option->write();
           break;
 
@@ -180,9 +218,9 @@ class SurveysPage_Controller extends Page_Controller {
       $res['newSurveyID'] = $newSurveyID;
       $res['newQuestionID'] = $newQuestionID;
       $res['newOptionID'] = $newOptionID;
-      print_r( json_encode($res) );
+      // return json_encode($res);
     }
-
+    // Detete Object
     elseif ( $request->isAjax() && $data = $request->postVar('delOne') ) {
       $res['InputData-del'] = $data; // Output income data for checking
       // Objects: Survey, Question, Option
@@ -197,8 +235,10 @@ class SurveysPage_Controller extends Page_Controller {
           $res['Errors'][] =" Wrong type of object (Expect: Survey, Question, Option) ";break;
       }
       if( !$res['Errors'] ) $res['DeleteRes'] = $Object->delete();
-      print_r($res);
+      // print_r($res);
     }
+
+    return json_encode($res);
   }
   // Create survey pages by request /show/$ID
   // Show list of Questions and Answers
@@ -207,6 +247,7 @@ class SurveysPage_Controller extends Page_Controller {
     $survey = Survey::get()->byID($surveyID);
     if(!$survey) return $this->httpError(404,'That region could not be found');
     $Questions = $survey->SurveyQuestions();
+
     return array (
       'Survey' => $survey,
       'Questions' => $Questions

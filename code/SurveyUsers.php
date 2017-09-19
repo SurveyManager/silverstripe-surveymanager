@@ -7,10 +7,10 @@ class SurveyUser extends DataObject {
         'Role' => "Enum('Admin,Surveyor','Surveyor')",
         'Access' => "Boolean"
     );
-    
+
 	private static $indexes = array(
 		'UniqueUserSurvey' => array(
-			'type' => 'unique', 
+			'type' => 'unique',
 			'value' => '"SurveyID,UserID"'
 		),
 	);
@@ -18,7 +18,7 @@ class SurveyUser extends DataObject {
     private static $has_one = array (
         'Survey' => 'Survey'
     );
-    
+
     private static $summary_fields = array(
 		"UserEmail", "Role", "Access"
 	);
@@ -29,7 +29,7 @@ class SurveyUser extends DataObject {
 		$fields->addFieldToTab('Root.Main', ReadonlyField::create('UserID'),'Content');
         return $fields;
     }
-    
+
     public function addMember($email) {
 		$m = DataObject::get_one('Member',"Email ='".$email."'");
 		if ($m->ID) {
@@ -41,7 +41,7 @@ class SurveyUser extends DataObject {
 		}
 		return $m;
 	}
-    
+
    	protected function onbeforeWrite() {
 		parent::onBeforeWrite();
 		// remove all survey orphans user

@@ -7,9 +7,22 @@ $('#new-survey').click(function() { event.preventDefault(); self = $(this);
 	savetodb.run(newOne, self, function(result) {
 		var res = jQuery.parseJSON(result)
 		console.log(res)
-		window.location.href = '/surveys-page/show/' + res.newSurveyID
+		// window.location.href = '/surveys-page/show/' + res.newSurveyID
+
+		var eTR = $('.empty-item').clone()
+		eTR.find('td:eq(0)').text(res['newSurveyID'])
+		eTR.find('td:eq(1)').text('New Survey')
+		eTR.find('td:eq(4) a').attr('href','/surveys-page/show/' + res['newSurveyID'])
+
+		console.log(eTR)
+		eTR.removeClass('empty-item').show(750)
+		$('table.table').append(eTR)
+
 	})
 })
+
+// $('#new-survey').click();
+
 $('.del-survey').click(function() { event.preventDefault(); self = $(this);
 	const delOne = {delOne:{
 		object: 'Survey',
@@ -27,6 +40,7 @@ $('.addQuestion').click(function(event){ event.preventDefault()
 	questionRow.find('.clear-val').val('');
 	questionRow.find('.answers .item-option:not(:first)').remove()
 	questionRow.find('.qIDv').text('')
+	questionRow.attr('qid', '')
 	questionRow.find('.answers span').text('')
 	questionRow.find('.panel').addClass('new')
 	questionRow.hide()
@@ -43,6 +57,7 @@ $('.addQuestion').click(function(event){ event.preventDefault()
 		var res = jQuery.parseJSON(result)
 		questionRow.find('.questionTitle').attr('name','Question--'+res.newQuestionID+'--Title')
 		questionRow.find('.questionText').attr('name','Question--'+res.newQuestionID+'--Txt')
+		questionRow.attr('qid', res.newQuestionID)
 		questionRow.find('.qIDv').text('(ID: '+res.newQuestionID+')')
 
 		questionRow.find('.answers input.optionText').attr('name','Option--'+res.newOptionID+'--Txt')
@@ -168,8 +183,8 @@ $('.question-row-list input').blur(function(){
  */
 var savetodb = {
 	sp: $('#circleG'), // Spinner
-	run: function(data, el, fn) {
-		fn = (fn) ? fn : function() {};
+	run: function(data, el, fn = function() {}) {
+		// fn = (fn) ? fn : function() {};
 		const self = this;
 		self.on( el );
 		$.post(AbsoluteLink+'saveajax/', data)

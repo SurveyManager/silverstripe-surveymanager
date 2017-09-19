@@ -19,7 +19,8 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-
+            User ID: $Member.ID
+            <script>var userID = $Member.ID</script>
             <div class="panel panel-default">
               <!-- Default panel contents -->
               <div class="panel-heading"><span>Surveys list</span>
@@ -29,6 +30,7 @@
               <table class="table">
                 <!-- (tr>th{lorem2}*3)+(tr>lorem2*3)*3 -->
                 <tr>
+                  <th>ID</th>
                   <th>Title</th>
                   <th>Description</th>
                   <th>Pin Code</th>
@@ -38,14 +40,22 @@
 
 <% loop $Surveys %>
     <tr>
-        <td><a href="$Link">$Title</a></td>
+        <td>$ID</td>
+        <td>$Title</td>
         <td>$Description</td>
         <td>$PIN</td>
-        <td><a href="$Link" class="btn btn-primary">Edit</button></a>
+        <td><a href="/surveys-page/show/$ID" class="btn btn-primary">Edit</button></a>
         <td><button class="btn btn-danger del-survey" value="$ID">Delete</button></td>
     </tr>
 <% end_loop %>
-
+    <tr class="empty-item" style="display:none">
+        <td></td>
+        <td>New Survey</td>
+        <td>...Description...</td>
+        <td></td>
+        <td><a href="" class="btn btn-primary">Edit</button></a>
+        <td><button class="btn btn-danger del-survey" value="">Delete</button></td>
+    </tr>
               </table>
 <!-- <div>TestFields: $GridField</div> -->
             </div>
