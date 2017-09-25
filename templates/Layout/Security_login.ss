@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="page-header">
-          <h1>$Title <small>DevMark: Layout "Page"</small></h1>
+          <h1>$Title <small>DevMark: Layout "Security_login.ss"</small></h1>
         </div>
       </div>
     </div>

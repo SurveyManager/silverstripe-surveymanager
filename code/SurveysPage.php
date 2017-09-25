@@ -57,9 +57,7 @@ class SurveysPage_Controller extends Page_Controller {
                   'SurveyUser.Role' => 'Admin',
                   'SurveyUser.Access' => 1
                 ));
-
     $result = $sqlQuery->execute();
-
     $list = ArrayList::create();
     foreach($result as $row) {
         $list->push($row);
@@ -131,7 +129,6 @@ class SurveysPage_Controller extends Page_Controller {
       }
       print_r( $res );
     }
-
     // Saving method - one field
     elseif ($request->isAjax() && $data = $request->postVar('saveOne')) {
       $res['InputData'] = $data; // Output income data for checking

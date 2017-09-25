@@ -1,14 +1,4 @@
-<section class="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="page-header">
-          <h1>Edit Survey <!--<small>DevMark: Layout "SurveyPage_show.ss"</small>--> </h1>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<% include sSubHeader %>
 
 <section class="content">
   <div class="container">
@@ -31,6 +21,12 @@
                   </div>
                   <div class="col-md-9">
                     <input id="Survey--$ID--Txt" type="text" name="Survey--$ID--Txt" class="form-control" value="$Description" />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="description">Surveyor's emails:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <textarea id="Survey--$ID--Emails" type="text" name="Survey--$ID--Emails" class="form-control" value="$Description"></textarea>
                   </div>
                 </div>
               </div>
@@ -96,7 +92,7 @@
     </form>
 
     <a href="/surveys-page/" class="btn btn-primary back-to-survey-list">Survey list</a>
-    <button class="btn btn-success addQuestion fixedButton">+</button>
+    <button class="btn btn-success addQuestion fixedButton" title="New Question">+</button>
 
     <nav style="display:none" class="survey-control-panel navbar navbar-default navbar-fixed-bottom">
       <div class="container">

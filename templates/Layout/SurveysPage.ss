@@ -1,14 +1,4 @@
-<section class="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="page-header">
-          <h1>$Title <!-- <small>DevMark: Layout "SurveyPage.ss"</small></h1> -->
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<% include sSubHeader %>
 
 <section class="content">
   <div class="container">
@@ -23,7 +13,7 @@
             <script>var userID = $Member.ID</script>
             <div class="panel panel-default">
               <!-- Default panel contents -->
-              <div class="panel-heading"><span>Surveys list</span>
+              <div class="panel-heading"><span>Survey list</span>
                 <button id="new-survey" class="btn btn-success">Add new Survey</button>
               </div>
               <!-- Table -->

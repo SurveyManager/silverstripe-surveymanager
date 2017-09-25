@@ -9,8 +9,8 @@
       </div>
       <div class="col-md-3">
         <div class="login-btns center-block">
-          <button type="button" class="btn signup">Sign up</button>
-          <button type="button" class="btn btn-default login">Log in</button>
+          <a href="/login/" class="btn signup">Sign up</a>
+          <a href="/Security/login" class="btn btn-default login">Log in</a>
         </div>
       </div>
     </div>

@@ -102,7 +102,9 @@ footer .subscribe button {
 footer .subscribe span{
 	left: 5px;
 }
-
+footer .subscribe{
+	max-width: 330px;
+}
 
 
 
