@@ -271,7 +271,7 @@ class SurveyAPI extends DataObject  {
 					//$q_item['options']['t']['dbg']=$sqlQuery->sql($params);
 					//$q_item['options']['t']['dbg_params']=$params;
 
-					$q_item['options']['total']=(int)$sqlQuery->execute()->value();
+					$q_item['total']=(int)$sqlQuery->execute()->value();
 				}
 				$out['d']['questions'][$item->ID]=$q_item;
 			}
