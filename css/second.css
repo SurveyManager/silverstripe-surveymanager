@@ -106,8 +106,13 @@ footer .subscribe{
 	max-width: 330px;
 }
 
-
-
+section.slider .startFreeBtn {
+  background-color: #F6AF3D;
+  color: #FFFFFF;
+}
+section.slider .startFreeBtn:hover {
+  background-color: #ff9d00;
+}
 
 
 

@@ -4,12 +4,13 @@
       <div class="col-md-5">
         <h1>Survey Manager</h1>
         <ul>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Hic aperiam dicta laboriosam, maxime!</li>
-          <li>Necessitatibus sunt laboriosam accusamus itaque.</li>
+          <li>Create a new survey</li>
+          <li>Generate a mobile app</li>
+          <li>Go out for survey</li>
+          <li>Take a result on the website</li>
         </ul>
-        <div class="startFreeBtn">
-          <button class="btn">Start Free</button>
+        <div class="">
+          <a href="/login/" class="btn startFreeBtn">Start Free</a>
         </div>
       </div>
       <div class="col-md-7">
