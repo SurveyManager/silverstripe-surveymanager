@@ -34,7 +34,7 @@
         <td>$Title</td>
         <td>$Description</td>
         <td>$PIN</td>
-        <td><a href="/surveys-page/show/$ID" class="btn btn-primary">Edit</button></a>
+        <td><a href="{$Up.Link}show/$ID" class="btn btn-primary">Edit</button></a>
         <td><button class="btn btn-danger del-survey" value="$ID">Delete</button></td>
     </tr>
 <% end_loop %>

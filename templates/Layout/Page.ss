@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-md-12">
 
-				<div class="content">$Content $Form</div>
+				<div class="content">$Content</div>
 
       </div>
     </div>

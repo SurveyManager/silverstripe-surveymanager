@@ -22,12 +22,12 @@
                   <div class="col-md-9">
                     <input id="Survey--$ID--Txt" type="text" name="Survey--$ID--Txt" class="form-control" value="$Description" />
                   </div>
-                  <div class="col-md-3">
+                  <!-- <div class="col-md-3">
                     <label for="description">Surveyor's emails:</label>
                   </div>
                   <div class="col-md-9">
                     <textarea id="Survey--$ID--Emails" type="text" name="Survey--$ID--Emails" class="form-control" value="$Description"></textarea>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

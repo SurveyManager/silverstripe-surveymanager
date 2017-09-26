@@ -94,7 +94,7 @@ sub {float: right;}
 }
 /* some fixes */
 header .login-btns {
-    width: 150px;
+    width: 300px;
 }
 footer .subscribe button {
 	margin-top: -1px;

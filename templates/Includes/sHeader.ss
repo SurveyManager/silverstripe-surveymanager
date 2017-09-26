@@ -9,8 +9,15 @@
       </div>
       <div class="col-md-3">
         <div class="login-btns center-block">
-          <a href="/login/" class="btn signup">Sign up</a>
+          <% if $CurrentMember %>
+          <span>Hi, $CurrentMember.FirstName</span>
+          <a href="/login/" class="btn signup">Edit profile</a>
+          <a href="/Security/logout" class="btn btn-default login">Log out</a>
+          <% else %>
+          <a href="/login/" class="btn signup">Sign in</a>
           <a href="/Security/login" class="btn btn-default login">Log in</a>
+          <% end_if %>
+
         </div>
       </div>
     </div>
