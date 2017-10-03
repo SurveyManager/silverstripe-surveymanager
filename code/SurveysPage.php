@@ -45,7 +45,8 @@ class SurveysPage_Controller extends Page_Controller {
     'APIsaveResult',
     'APIresult',
     'show',
-    'saveajax'
+    'saveajax',
+    'results'
   );
   public function index(SS_HTTPRequest $request)  {
     $member = Member::currentUser();
@@ -251,6 +252,14 @@ class SurveysPage_Controller extends Page_Controller {
     return array (
       'Survey' => $survey,
       'Questions' => $Questions
+    );
+  }
+  public function results(SS_HTTPRequest $request) {
+    $surveyID = $request->param('ID');
+    $survey = Survey::get()->byID($surveyID);
+
+    return array (
+      'Survey' => $survey
     );
   }
 
