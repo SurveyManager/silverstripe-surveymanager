@@ -258,9 +258,11 @@ class SurveysPage_Controller extends Page_Controller {
     $surveyID = $request->param('ID');
     $survey = Survey::get()->byID($surveyID);
 
+    print_r( $this->resultApi($survey) );
+
     return array (
       'Survey' => $survey,
-      'Results' => $this->resultApi($survey)
+      'Results' => json_encode($this->resultApi($survey),JSON_UNESCAPED_UNICODE)
     );
   }
 
