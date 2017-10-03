@@ -211,8 +211,12 @@ class SurveyAPI extends DataObject  {
 	function questionsResult ($token, $data,$SurveyID=false) {
 		return $this->surveyQuestions($token, true, $SurveyID);
 	}
+
+	function questionsRawResult ($token, $data, $SurveyID) {
+		return $this->surveyQuestions($token, true, $SurveyID, true);
+	}
 	
-	function surveyQuestions ($token,$data=false,$SurveyID=false) {
+	function surveyQuestions ($token,$data=false,$SurveyID=false, $raw=false) {
 		$out=$this->API_answer;
 		if ($this->_APIcheck($token) || $SurveyID!=false) {
 			$out['ok']=true;
@@ -238,12 +242,29 @@ class SurveyAPI extends DataObject  {
 					if ($data!==false) {
 						$sqlQuery = new SQLQuery();
 						$sqlQuery->setFrom('SurveyResult');
-						$sqlQuery->setSelect('COUNT(ID)');
+						if ($raw!==false) {
+							$sqlQuery->setSelect('ResultTS, UserEmail, Role');
+							$sqlQuery->addLeftJoin('SurveyUser','"SurveyResult"."UserID" = "SurveyUser"."UserID"');
+						} else {
+							$sqlQuery->setSelect('COUNT(ID)');
+						}
 						$sqlQuery->addWhere(array('OptionID' => $option->ID, 'QuestionID'=> $item->ID));
 						//$q_item['options'][$option->ID]['dbg']=$sqlQuery->sql($params);
 						//$q_item['options'][$option->ID]['dbg_params']=$params;
-						$cnt = (int)$sqlQuery->execute()->value();
-						$q_item['options'][$option->ID]['results']=$cnt;
+						if ($raw!==false) {
+							$result = $sqlQuery->execute();
+							foreach ($result as $row) {
+								if (!$q_item['options'][$option->ID]) {
+									$q_item['options'][$option->ID]['results']=0;
+									$q_item['options'][$option->ID]['values']=array();
+								}
+								$q_item['options'][$option->ID]['results']++;
+								$q_item['options'][$option->ID]['values'][]=$row;
+							}
+						} else {
+							$cnt = (int)$sqlQuery->execute()->value();
+							$q_item['options'][$option->ID]['results']=$cnt;
+						}
 					}
 				}
 				if ($data!==false) {
@@ -254,10 +275,27 @@ class SurveyAPI extends DataObject  {
 						if (!$q_item['options']['total']) $q_item['options']['total']=0;
 						$sqlQuery = new SQLQuery();
 						$sqlQuery->setFrom('SurveyResult');
-						$sqlQuery->setSelect('COUNT(ID)');
+						if ($raw!==false) {
+							$sqlQuery->setSelect('ResultTS, UserEmail, Role, OptionText');
+							$sqlQuery->addLeftJoin('SurveyUser','"SurveyResult"."UserID" = "SurveyUser"."UserID"');
+						} else {
+							$sqlQuery->setSelect('COUNT(ID)');
+						}
 						$sqlQuery->addWhere(array('OptionID' => 0, 'QuestionID'=> $item->ID));
-						$cnt = (int)$sqlQuery->execute()->value();
-						$q_item['options'][0]['results']=$cnt;
+						if ($raw!==false) {
+							$result = $sqlQuery->execute();
+							foreach ($result as $row) {
+								if (!$q_item['options'][$option->ID]) {
+									$q_item['options'][$option->ID]['results']=0;
+									$q_item['options'][$option->ID]['values']=array();
+								}
+								$q_item['options'][$option->ID]['results']++;
+								$q_item['options'][$option->ID]['values'][]=$row;
+							}
+						} else {
+							$cnt = (int)$sqlQuery->execute()->value();
+							$q_item['options'][0]['results']=$cnt;
+						}
 					}
 						
 					$sqlQuery = new SQLQuery();
