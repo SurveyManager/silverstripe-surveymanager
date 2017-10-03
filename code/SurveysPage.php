@@ -161,10 +161,10 @@ class SurveysPage_Controller extends Page_Controller {
           $Object->Title = $data['val'];break;
         case 'Txt':
           // $res['SwitchType'] = 'Txt';
-          $Object->Description = $data['val'];break;
+          $Object->Description = $data['val']; break;
         case 'Select':
           // $res['SwitchType'] = 'Select';
-          $Object->Type = $data['val'];break;
+          $res['tt'] = $Object->Type = trim($data['val']); break;
 
         default:
           $res['Errors'][] =" Wrong type of data (Expect: Title, Txt, Select) ";
