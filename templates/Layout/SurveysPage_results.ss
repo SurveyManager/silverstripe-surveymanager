@@ -3,7 +3,6 @@
 <section class="content">
   <div class="container">
     Survey: $Survey.Title
-    
     <div id="resultChart">CHART</div>
     <div id="circleG" class="spinner">
       <div class="save-msg">Ajax request...</div>

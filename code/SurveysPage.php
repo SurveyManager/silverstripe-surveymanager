@@ -258,23 +258,24 @@ class SurveysPage_Controller extends Page_Controller {
     $surveyID = $request->param('ID');
     $survey = Survey::get()->byID($surveyID);
 
-    print_r( $this->resultApi($survey) );
+    var_dump($this->resultApi($survey));
 
     return array (
       'Survey' => $survey,
-      'Results' => json_encode($this->resultApi($survey),JSON_UNESCAPED_UNICODE)
+      //'Results' => json_encode($this->resultApi($survey),JSON_UNESCAPED_UNICODE)
     );
   }
 
 
   public function resultApi($survey) {
-    $this->APIresult(Member::currentUser()->Email, $survey->PIN, $surveyID);
+    return $this->APIresult(false, Member::currentUser()->Email, $survey->PIN, $survey->ID);
   }
 
 
   function _return($out,$asis) {
     if ($asis){
-     return $out;
+      //var_dump($out);
+      return $out;
     } else {
       print json_encode($out,JSON_UNESCAPED_UNICODE);
       die();
@@ -310,9 +311,10 @@ class SurveysPage_Controller extends Page_Controller {
         )
       );
     }
-    public function APIresult($email=false, $pin=false, $SurveyID=false) {
+    public function APIresult($request=false, $email=false, $pin=false, $SurveyID=false) {
+      //var_dump(array($email,$pin,$SurveyID));
       $this->_initAPI($email,$pin);
-      $this->_return(
+      return $this->_return(
         $this->API->questionsResult(
           $this->APItoken1===false?$this->getRequest()->postVar('token'):$this->APItoken1,
           $this->getRequest()->postVar('d'),
