@@ -64,9 +64,9 @@
                   <div class="col-xs-3">
                     <label for="">Type of question:</label>
                     <select tt="$Type" class="form-control typeOfQuest clear-val" name="Question--$ID--Select">
-                        <option<% if $Type == 'text' %> selected <% end_if %>> text</option>
-                        <option<% if $Type == 'one' %> selected <% end_if %>> one</option>
-                        <option<% if $Type == 'multi' %> selected <% end_if %>> multi</option>
+                        <option<% if $Type == 'text' %> selected <% end_if %>>text</option>
+                        <option<% if $Type == 'one' %> selected <% end_if %>>one</option>
+                        <option<% if $Type == 'multi' %> selected <% end_if %>>multi</option>
                     </select>
                     <a class="btn btn-success addNewAnswer" title="">New Option</a>
                   </div>
