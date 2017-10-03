@@ -63,7 +63,7 @@
                 <div class="row">
                   <div class="col-xs-3">
                     <label for="">Type of question:</label>
-                    <select class="form-control typeOfQuest clear-val" name="Question--$ID--Select">
+                    <select tt="$Type" class="form-control typeOfQuest clear-val" name="Question--$ID--Select">
                         <option<% if $Type == 'text' %> selected <% end_if %>> text</option>
                         <option<% if $Type == 'one' %> selected <% end_if %>> one</option>
                         <option<% if $Type == 'multi' %> selected <% end_if %>> multi</option>

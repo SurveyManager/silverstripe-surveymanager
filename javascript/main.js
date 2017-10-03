@@ -134,16 +134,20 @@ $('.answers button.delete-option').click(function(e){
 
 // Select type of quesion
 $('select.typeOfQuest').change(function() {
+
 	console.log($(this).find('option:selected').text());
 
 	var names = $(this).attr('name').split('--')
+	console.log(names);
 	var saveOne = { saveOne: {
 		object: names[0],
 		id: names[1],
 		type: names[2],
 		val: $(this).find('option:selected').text()
 	}}
-	savetodb.run(saveOne, $(this) )
+	savetodb.run(saveOne, $(this), function(d){
+		console.log(d);
+	} )
 
 })
 // Input change
@@ -167,8 +171,8 @@ $('.question-row-list input').blur(function(){
 				val: data.value
 		}}
 		console.log(saveOne);
-		savetodb.run(saveOne, th, function() {
-			console.log("FUNC !!!");
+		savetodb.run(saveOne, th, function(d) {
+			console.log(d);
 		})
 	}
 })
