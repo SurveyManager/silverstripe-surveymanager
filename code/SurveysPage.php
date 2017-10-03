@@ -270,7 +270,7 @@ class SurveysPage_Controller extends Page_Controller {
   }
 
 
-  function _return($out,$asis) {
+  function _return($out,$asis=false) {
     if ($asis){
      return $out;
     } else {
@@ -308,17 +308,17 @@ class SurveysPage_Controller extends Page_Controller {
         )
       );
     }
-    public function APIresult($email=false, $pin=false, $SurveyID=false) {
+    public function APIresult(SS_HTTPRequest $request, $email=false, $pin=false, $SurveyID=false) {
       $this->_initAPI($email,$pin);
       $this->_return(
         $this->API->questionsResult(
-          $this->APItoken1===false?$this->getRequest()->postVar('token'):$this->APItoken1,
+          $email===false?$this->getRequest()->postVar('token'):$this->APItoken1,
+          $this->getRequest()->postVar('token'),
           $this->getRequest()->postVar('d'),
           $SurveyID
         ),
       ($email===false?false:true));
     }
-
 
   }
   ?>
