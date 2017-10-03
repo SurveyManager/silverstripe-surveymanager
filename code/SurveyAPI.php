@@ -208,13 +208,13 @@ class SurveyAPI extends DataObject  {
 		return $this->_return($out);
 	}
 
-	function questionsResult ($token, $data) {
-		return $this->surveyQuestions($token, true);
+	function questionsResult ($token, $data,$SurveyID=false) {
+		return $this->surveyQuestions($token, true, $SurveyID);
 	}
 	
-	function surveyQuestions ($token,$data=false) {
+	function surveyQuestions ($token,$data=false,$SurveyID=false) {
 		$out=$this->API_answer;
-		if ($this->_APIcheck($token)) {
+		if ($this->_APIcheck($token) || $SurveyID!=false) {
 			$out['ok']=true;
 			$out['d']=array("survey"=>array(
 					"title"=>$this->survey->Title,
@@ -222,7 +222,7 @@ class SurveyAPI extends DataObject  {
 					"PIN"=>$this->survey->PIN
 				), "questions"=>array());
 			$out['d']['APIkey']=$this->APIkey;
-			$q=SurveyQuestion::get()->filter(array('SurveyID' => $this->API_data->SurveyID));
+			$q=SurveyQuestion::get()->filter(array('SurveyID' => $SurverID==false?$this->API_data->SurveyID:$surveyID));
 			foreach($q as $item) { 
 				$q_item=array(
 					"id"=>$item->ID,
