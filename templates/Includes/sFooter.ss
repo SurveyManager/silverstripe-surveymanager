@@ -7,9 +7,6 @@
       <div class="col-md-4 col-sm-6">
         <div class="navFooter">
           <ul>
-            <!-- <li class="current"><a href="#">Home</a></li>
-            <li><a href="#">Page1</a></li>
-            <li><a href="#">Page2</a></li> -->
             <% loop $Menu(1) %>
               <li class="$LinkingMode">
                 <a href="$Link" title="$Title.XML">$MenuTitle.XML</a>

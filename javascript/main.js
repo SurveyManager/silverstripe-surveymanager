@@ -12,7 +12,8 @@ $('#new-survey').click(function() { event.preventDefault(); self = $(this);
 		var eTR = $('.empty-item').clone()
 		eTR.find('td:eq(0)').text(res['newSurveyID'])
 		eTR.find('td:eq(1)').text('New Survey')
-		eTR.find('td:eq(4) a').attr('href','/surveys-page/show/' + res['newSurveyID'])
+		eTR.find('td:eq(4) a').attr('href','/surveys-page/results/' + res['newSurveyID'])
+		eTR.find('td:eq(5) a').attr('href','/surveys-page/show/' + res['newSurveyID'])
 
 		console.log(eTR)
 		eTR.removeClass('empty-item').show(750)

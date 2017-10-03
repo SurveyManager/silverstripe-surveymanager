@@ -257,8 +257,10 @@ class SurveysPage_Controller extends Page_Controller {
   public function results(SS_HTTPRequest $request) {
     $surveyID = $request->param('ID');
     $survey = Survey::get()->byID($surveyID);
-
-    var_dump($this->resultApi($survey));
+    $t=$this->resultApi($survey);
+    //$resApi = json_encode( $this->resultApi($survey),JSON_UNESCAPED_UNICODE );
+    //var_dump($t['d']);
+     echo('<script>var resultApi = '. json_encode( $t ) .'</script>');
 
     return array (
       'Survey' => $survey,
@@ -317,7 +319,6 @@ class SurveysPage_Controller extends Page_Controller {
       return $this->_return(
         $this->API->questionsResult(
           $email===false?$this->getRequest()->postVar('token'):$this->APItoken1,
-          $this->getRequest()->postVar('token'),
           $this->getRequest()->postVar('d'),
           $SurveyID
         ),
