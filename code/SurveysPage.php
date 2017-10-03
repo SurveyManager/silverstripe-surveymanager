@@ -47,7 +47,6 @@ class SurveysPage_Controller extends Page_Controller {
     'show',
     'saveajax',
     'results'
-    'resultApi'
   );
   public function index(SS_HTTPRequest $request)  {
     $member = Member::currentUser();
@@ -260,21 +259,24 @@ class SurveysPage_Controller extends Page_Controller {
     $survey = Survey::get()->byID($surveyID);
 
     return array (
-      'Survey' => $survey
+      'Survey' => $survey,
+      'Results' => $this->resultApi($survey)
     );
   }
 
 
-  public function resultApi(SS_HTTPRequest $request) {
-    $surveyID = $request->param('ID');
-    $survey = Survey::get()->byID($surveyID);
+  public function resultApi($survey) {
     $this->APIresult(Member::currentUser()->Email, $survey->PIN, $surveyID);
   }
 
 
-  function _return($out) {
-    print json_encode($out,JSON_UNESCAPED_UNICODE);
-    die();
+  function _return($out,$asis) {
+    if ($asis){
+     return $out;
+    } else {
+      print json_encode($out,JSON_UNESCAPED_UNICODE);
+      die();
+   }
   }
 
   private $APItoken1=false;
@@ -313,8 +315,8 @@ class SurveysPage_Controller extends Page_Controller {
           $this->APItoken1===false?$this->getRequest()->postVar('token'):$this->APItoken1,
           $this->getRequest()->postVar('d'),
           $SurveyID
-        )
-      );
+        ),
+      ($email===false?false:true));
     }
 
 
