@@ -14,6 +14,7 @@
             <div class="panel panel-default">
               <!-- Default panel contents -->
               <div class="panel-heading"><span>Survey list</span>
+                <a href="#" id="get-app" class="btn btn-warning">Download App</a>
                 <button id="new-survey" class="btn btn-success">Add new Survey</button>
               </div>
               <!-- Table -->

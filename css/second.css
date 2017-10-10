@@ -7,6 +7,10 @@
 #new-survey{
 	float: right;
 }
+#get-app{
+	float: right;
+    margin-left: 8px;
+}
 .survey-control-panel .container{
 	padding-top: 7px;
 }
